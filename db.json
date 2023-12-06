@@ -1,5 +1,68 @@
 {
     "toko":[
-        
+        {
+            "id": 1,
+            "nama": "Toko Jaya Abadi",
+            "alamat" : "Jl. Wonogiri No. 16",
+            "kategori" : "bangunan",
+            "produk": [
+                {
+                    "id_produk": 101,
+                    "nama_produk": "Pipa 2 Meter",
+                    "harga" : 10000
+                },
+                {
+                    "id_produk": 102,
+                    "nama_produk": "Cat Merah",
+                    "harga" : 50000
+                },
+                {
+                    "id_produk": 103,
+                    "nama_produk": "Cat Hitam",
+                    "harga" : 50000
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "nama" : "Chicken Smash Pak Rusdi",
+            "alamat": "Jl. Ah tong No 203",
+            "kategori" : "makanan",
+            "produk": [
+                {
+                    "id_produk" : 201,
+                    "nama_produk" : "Ayam Kampus Legit",
+                    "harga" : 15000
+                },
+                {
+                    "id_produk" : 202,
+                    "nama_produk" : "Es Teh",
+                    "harga" : 3500
+                },
+                {
+                    "id_produk" : 203,
+                    "nama_produk" : "Nugget Geprek",
+                    "harga" : 12500
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "nama" : "",
+            "alamat": "Jl. Pegangsaan No 45",
+            "kategori": "furnitur",
+            "produk": [
+                {
+                    "id" : 301,
+                    "nama_produk" : "Kursi Lipat",
+                    "harga": 45000
+                },
+                {
+                    "id" : 302,
+                    "nama_produk": "Meja Kasur",
+                    "harga": 75000
+                }
+            ]
+        }
     ]
 }
