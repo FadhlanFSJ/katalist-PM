@@ -9,17 +9,20 @@
                 {
                     "id_produk": 101,
                     "nama_produk": "Pipa 2 Meter",
-                    "harga" : 10000
+                    "harga" : 10000,
+                    "stok" : 10
                 },
                 {
                     "id_produk": 102,
                     "nama_produk": "Cat Merah",
-                    "harga" : 50000
+                    "harga" : 50000,
+                    "stok" : 10
                 },
                 {
                     "id_produk": 103,
                     "nama_produk": "Cat Hitam",
-                    "harga" : 50000
+                    "harga" : 50000,
+                    "stok": 10
                 }
             ]
         },
@@ -32,17 +35,20 @@
                 {
                     "id_produk" : 201,
                     "nama_produk" : "Ayam Kampus Legit",
-                    "harga" : 15000
+                    "harga" : 15000,
+                    "stok" : 10
                 },
                 {
                     "id_produk" : 202,
                     "nama_produk" : "Es Teh",
-                    "harga" : 3500
+                    "harga" : 3500,
+                    "stok" : 10
                 },
                 {
                     "id_produk" : 203,
                     "nama_produk" : "Nugget Geprek",
-                    "harga" : 12500
+                    "harga" : 12500,
+                    "stok": 10
                 }
             ]
         },
@@ -55,12 +61,14 @@
                 {
                     "id" : 301,
                     "nama_produk" : "Kursi Lipat",
-                    "harga": 45000
+                    "harga": 45000,
+                    "stok": 5
                 },
                 {
                     "id" : 302,
                     "nama_produk": "Meja Kasur",
-                    "harga": 75000
+                    "harga": 75000,
+                    "stok" : 10
                 }
             ]
         }
