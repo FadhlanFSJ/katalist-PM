@@ -169,10 +169,11 @@ const styles = StyleSheet.create({
         paddingTop: 4,
         paddingLeft: 10,
         height: 40,
-        borderColor: 'gray',
+        borderColor: 'white',
         borderWidth: 1,
         borderRadius: 7,
         fontFamily: 'Poppins-Regular',
+        backgroundColor: '#E0E0E4'
     },
     listData: {
         marginTop: 10,

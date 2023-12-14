@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import AllStore from './screens/AllStore';
+import DetailStore from './screens/DetailStore';
 import * as Font from 'expo-font';
 import { useEffect, useState } from 'react';
 
@@ -15,7 +16,6 @@ export default function App() {
       });
       setIsFontLoaded(true);
     }
-
     loadFonts();
   }, []);
 
@@ -27,7 +27,7 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <View style={styles.container}>
-        <AllStore />
+        <DetailStore />
       </View>
     </>
 
