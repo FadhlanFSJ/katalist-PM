@@ -38,7 +38,7 @@ const Login = ({ navigation}) => {
 
         if (username.trim() !== "" && password.trim() !== "") {
             if (username === dummyUsername && password === dummyPassword) {
-              navigation.navigate("SignUp");
+              navigation.navigate("AllStore", {username});
             } else {
               setLoginError("Username atau Password salah");
             }
@@ -187,7 +187,8 @@ const styles = StyleSheet.create ({
         width: 313,
         height: 39,
         borderRadius: 12,
-        borderWidth: 1
+        borderWidth: 1,
+        paddingLeft: 10,
     
     },
 

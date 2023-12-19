@@ -12,7 +12,9 @@ import {
 import { useState, useEffect } from "react"
 
 
-export default function AllStore() {
+export default function AllStore({route}) {
+
+    const { username } = route.params;
 
     const [selectedCategory, setSelectedCategory] = useState("Semua");
 
@@ -84,7 +86,7 @@ export default function AllStore() {
         <>
             <View style={styles.container}>
                 <View style={styles.TopPage}>
-                    <Text style={styles.headers}>Hai, Fadhlan S. J.</Text>
+                    <Text style={styles.headers}>Hi {username} !</Text>
                 </View>
                 <View style={styles.search}>
                     <TextInput
