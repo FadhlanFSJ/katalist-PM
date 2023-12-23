@@ -12,11 +12,12 @@ import {
     FlatList,
     } from 'react-native';
 import React from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import Separator from "../components/separator";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
@@ -31,7 +32,15 @@ const SignUp = () => {
     const [phoneError, setPhoneError] = useState(false);
     const [signUpError, setSignUpError] = useState("");
 
-    const handleSignUp = () => {
+    useEffect(() => {
+        const initializeAsyncStorage = async () => {
+        //   await AsyncStorage.clear(); // Delete pas reload
+        };
+    
+        initializeAsyncStorage();
+    }, []);
+
+    const handleSignUp = async () => {
         if(username.trim() === "") {
             setUsernameError(true);
         } else{
@@ -69,17 +78,34 @@ const SignUp = () => {
         }
 
         if (
-            username.trim() === "" ||
-            password.trim() === "" ||
-            confirmPass.trim() === "" ||
-            email.trim() === "" ||
-            nama.trim() === "" ||
-            phone.trim() === ""
+            !usernameError &&
+            !passwordError &&
+            !confirmPassError &&
+            !emailError &&
+            !namaError &&
+            !phoneError
           ) {
-            setSignUpError("Lengkapi Form");
-        }
+            try {
+              const userData = {
+                username,
+                password,
+                email,
+                nama,
+                phone,
+              };
+      
+              await AsyncStorage.setItem('userData', JSON.stringify(userData));
+              console.log('Berhasil disimpan KATALUR');
+              navigation.navigate("AllStore", {username});
+            } catch (error) {
+              console.log('Error saving data to AsyncStorage:');
+            }
+          } else {
+            setSignUpError('Lengkapi Form');
+          }
+        };
+      
 
-    }
     return(
         <ScrollView>
             <View style={styles.container}>
@@ -93,10 +119,13 @@ const SignUp = () => {
                 {signUpError !== "" && (
                     <Text style={styles.errorMessage}>{signUpError}</Text>
                 )}
+
                 <View style={styles.form}>
                     <Text style={styles.formTitle}>Username</Text>
                     <TextInput
                         style={[styles.textInput, usernameError && styles.errorForm]}
+                        value={username}
+                        onChangeText={(text) => setUsername(text)}
                     />
                 </View>
 
@@ -105,33 +134,47 @@ const SignUp = () => {
                     <TextInput
                         style={[styles.textInput, passwordError && styles.errorForm]}
                         secureTextEntry={true}
+                        value={password}
+                        onChangeText={(text) => setPassword(text)}
                     />
                 </View>
+
                 <View style={styles.form}>
                     <Text style={styles.formTitle}>Konfirmasi Password</Text>
                     <TextInput
                         style={[styles.textInput, confirmPassError && styles.errorForm]}
                         secureTextEntry={true}
+                        value={confirmPass}
+                        onChangeText={(text) => setConfirmPass(text)}
                     />
                 </View>
+
                 <View style={styles.form}>
                     <Text style={styles.formTitle}>Email</Text>
                     <TextInput
                         style={[styles.textInput, emailError && styles.errorForm]}
-                        keyboardType='email-address'
+                        keyboardType="email-address"
+                        value={email}
+                        onChangeText={(text) => setEmail(text)}
                     />
                 </View>
+
                 <View style={styles.form}>
                     <Text style={styles.formTitle}>Nama</Text>
                     <TextInput
                         style={[styles.textInput, namaError && styles.errorForm]}
+                        value={nama}
+                        onChangeText={(text) => setNama(text)}
                     />
                 </View>
+
                 <View style={styles.form}>
                     <Text style={styles.formTitle}>Nomor Handphone</Text>
                     <TextInput
                         style={[styles.textInput, phoneError && styles.errorForm]}
-                        keyboardType='number-pad'
+                        keyboardType="number-pad"
+                        value={phone}
+                        onChangeText={(text) => setPhone(text)}
                     />
                 </View>
                 <View>
@@ -184,7 +227,7 @@ const styles = StyleSheet.create ({
         fontSize:30,
         color:"#000000",
         marginBottom: 20,
-        fontFamily: "Poppins-Black",
+        fontFamily: 'Poppins-Black',
         lineHeight: 45
     },
 
@@ -198,7 +241,7 @@ const styles = StyleSheet.create ({
     },
 
     formTitle : {
-        fontFamily: "Poppins-Black",
+        fontFamily: 'Poppins-Black',
         fontSize: 16,
         fontWeight: "bold",
         color:"#000000",

@@ -14,7 +14,7 @@ import { useState, useEffect } from "react"
 
 export default function AllStore({route}) {
 
-    const { username } = route.params;
+    const { username } = route.params || {};
 
     const [selectedCategory, setSelectedCategory] = useState("Semua");
 

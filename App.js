@@ -29,7 +29,8 @@ const MainApp = () => {
     async function loadFonts() {
       await Font.loadAsync({
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
-        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf')
+        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+        'Poppins-Black' : require('./assets/fonts/Poppins-Black.ttf')
       });
       setIsFontLoaded(true);
     }

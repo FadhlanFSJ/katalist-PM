@@ -4,22 +4,27 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "serve-json": "json-server --watch db.json --port 3001"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.18.2",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "expo": "~49.0.15",
+    "expo-auth-session": "~5.0.2",
     "expo-font": "~11.4.0",
+    "expo-random": "~13.2.0",
     "expo-status-bar": "~1.6.0",
+    "expo-web-browser": "~12.3.2",
     "json-server": "^0.17.4",
     "react": "18.2.0",
     "react-native": "0.72.6",
-    "react-native-animatable": "^1.4.0"
+    "react-native-animatable": "^1.4.0",
+    "expo-splash-screen": "~0.20.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
