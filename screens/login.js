@@ -1,3 +1,5 @@
+// 64844486215-973dvv2ak0fdopk5hdshvsk057nr2nem.apps.googleusercontent.com
+
 import {
     SafeAreaView,
     ScrollView,
@@ -6,49 +8,120 @@ import {
     Text,
     useColorScheme,
     View,
+    Button,
     TextInput,
     TouchableOpacity,
     Image} from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Separator from "../components/separator";
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const Login = ({ navigation}) => {
 
+    // Sign-In-Google
+    const [userInfo, setUserInfo] = useState(null);
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: "64844486215-973dvv2ak0fdopk5hdshvsk057nr2nem.apps.googleusercontent.com"
+    });
+
+    useEffect(() => {
+        signInWithGoogle();
+    }, [response])
+
+    async function signInWithGoogle(){
+        const user = await AsyncStorage.getItem('@user');
+
+        if(!user){
+            if(response?.type === 'success'){
+                await getuserInfo(response.authentication.accessToken);
+            }
+            
+        } else{
+            setUserInfo(JSON.parse(user));
+        }
+    };
+
+    const getuserInfo = async (token) => {
+        if(!token) return;
+
+        try{
+            const response = await fetch(
+                'https://www.googleapis.com/userinfo/v2/me',
+                {
+                    headers: {Authorization: 'Bearer ${token}'}
+                }
+            );
+
+            const user = await response.json();
+            await AsyncStorage.setItem('@user', JSON.stringify(user));
+            setUserInfo(user);
+        } catch(error){
+
+        }
+    };
+
+    // Username Login
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [loginError, setLoginError] = useState("");
 
-    const handleLogin = () => {
-        setUsernameError(false);
-        setPasswordError(false);
-        setLoginError("");
-
-        const dummyUsername = "test";
-        const dummyPassword = "test";
-
-        if (username.trim() === "") {
-            setUsernameError(true);
-        }
-
-        if (password.trim() === "") {
-            setPasswordError(true);
-        }
-
-        if (username.trim() !== "" && password.trim() !== "") {
-            if (username === dummyUsername && password === dummyPassword) {
-              navigation.navigate("AllStore", {username});
-            } else {
-              setLoginError("Username atau Password salah");
+    useEffect(() => {
+        const loadUserData = async () => {
+          try {
+            const storedUserData = await AsyncStorage.getItem('userData');
+            if (storedUserData) {
+              const userData = JSON.parse(storedUserData);
+              setUsername(userData.username);
             }
-          } 
-        
-        else {
-            setLoginError("Masukkan Email dan Password !");
-        }
-    };
+          } catch (error) {
+            console.error('Error loading user data from AsyncStorage:', error);
+          }
+        };
+    
+        loadUserData();
+    }, []); // Efek hanya dijalankan saat komponen dimuat
 
+    const handleLogin = async () => {
+        if (username.trim() === '') {
+          setUsernameError(true);
+        } else {
+          setUsernameError(false);
+        }
+      
+        if (password.trim() === '') {
+          setPasswordError(true);
+        } else {
+          setPasswordError(false);
+        }
+      
+        if (!usernameError && !passwordError) {
+          try {
+            const storedUserData = await AsyncStorage.getItem('userData');
+            if (storedUserData) {
+              const userData = JSON.parse(storedUserData);
+      
+              if (userData.username === username && userData.password === password) {
+                setLoginError('');
+                navigation.navigate("AllStore", {username});
+              } else {
+                setLoginError('Username atau password salah');
+              }
+            } else {
+              setLoginError('Tidak ada data pengguna yang tersimpan');
+            }
+          } catch (error) {
+            console.error('Error loading user data from AsyncStorage:', error);
+            setLoginError('Terjadi kesalahan saat login');
+          }
+        }
+      };
+      
     return (
         <View style={styles.container}>
             <Image
@@ -110,18 +183,23 @@ const Login = ({ navigation}) => {
                 <Text style={styles.contGoogle}>
                     Lanjutkan dengan Google
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => promptAsync()}
+                >
                     <Image
                         style={{marginBottom: 10}}
                         source={require("../assets/continue.png")}
                     />
                 </TouchableOpacity>
+                <Button title="delete" onPress={() => AsyncStorage.removeItem('@user')}/>
                 
                 <Text style={styles.contGoogle}>
                     atau
                 </Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("AllStore")}
+                >
                     <Text style={styles.katalog}>
                         Aku Cuma Mau Lihat Katalog
                     </Text>
@@ -158,13 +236,13 @@ const styles = StyleSheet.create ({
         fontSize:30,
         color:"#000000",
         marginBottom: 20,
-        fontFamily: "Poppins-Black",
+        fontFamily: 'Poppins-Black',
         lineHeight: 45
     },
 
     greeting:{
         fontSize: 14,
-        fontFamily: "Poppins-Regular",
+        fontFamily: 'Poppins-Regular',
         color:"#000000",
         lineHeight: 21,
         marginBottom: 40,
@@ -172,10 +250,10 @@ const styles = StyleSheet.create ({
     },
 
     formTitle : {
-        fontFamily: "Poppins-Black",
+        fontFamily: 'Poppins-Black',
         fontSize: 16,
-        fontWeight: "bold",
-        color:"#000000",
+        fontWeight: 'bold',
+        color:'#000000',
         marginBottom: 10
     },
     
@@ -193,15 +271,15 @@ const styles = StyleSheet.create ({
     },
 
     forgotPass : {
-        fontFamily: "Poppins-Regular",
+        fontFamily: 'Poppins-Regular',
         fontSize: 12,
         lineHeight: 15,
-        color: "#000000",
+        color: '#000000',
         marginRight: 205
     },
 
     button : {
-        backgroundColor: "#FC6011",
+        backgroundColor: '#FC6011',
         width: 124,
         height: 36,
         borderRadius: 12,
@@ -211,7 +289,7 @@ const styles = StyleSheet.create ({
 
     textLogin : {
         color: "#FFFFFF",
-        fontFamily: "Poppins-Regular",
+        fontFamily: 'Poppins-Regular',
         fontSize: 16,
         fontWeight: "bold",
         lineHeight: 24,
@@ -219,7 +297,7 @@ const styles = StyleSheet.create ({
     },
 
     newAcc : {
-        fontFamily: "Poppins-Regular",
+        fontFamily: 'Poppins-Regular',
         lineHeight: 16.5,
         fontSize: 11,
         textAlign: "center",
@@ -235,7 +313,7 @@ const styles = StyleSheet.create ({
     },
 
     contGoogle: {
-        fontFamily: "Poppins-Regular",
+        fontFamily: 'Poppins-Regular',
         fontWeight: "bold",
         fontSize: 11,
         lineHeight: 16.5,

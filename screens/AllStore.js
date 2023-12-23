@@ -15,9 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 // Assume you have already set up your navigation stack
 
 export default function AllStore({ route }) {
-  const { username } = route.params;
   const navigation = useNavigation();
-
+  const { username } = route.params || {};
   const [selectedCategory, setSelectedCategory] = React.useState("Semua");
 
   const handleCategoryPress = (category) => {
