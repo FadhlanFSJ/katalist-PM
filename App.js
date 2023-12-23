@@ -10,6 +10,9 @@ import Login from "./screens/login";
 import SignUp from "./screens/signup";
 import AllStore from './screens/AllStore';
 import DetailStore from './screens/DetailStore';
+import DetailProduk from "./screens/DetailProduk";
+import BayarProduk from "./screens/BayarProduk";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +65,8 @@ const MainApp = () => {
           />
           <Stack.Screen name="AllStore" component={AllStore} />
           <Stack.Screen name="DetailStore" component={DetailStore} />
+          <Stack.Screen name="DetailProduk" component={DetailProduk} />
+          <Stack.Screen name="BayarProduk" component={BayarProduk} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

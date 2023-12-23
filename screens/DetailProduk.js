@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   StatusBar,
   TouchableOpacity,
@@ -14,24 +13,19 @@ import { useNavigation } from '@react-navigation/native';
 const DetailProduk = () => {
   const navigation = useNavigation();
 
-  const handlePesan = () => {
-    // Navigasi ke halaman DetailProduk
-    navigation.navigate('DetailProduk');
-  };
-
-  const handleAddToCart = () => {
-    // Implementasi logika untuk tombol "Add to Cart"
-    console.log('Tombol Add to Cart diklik');
+  const handleBayarPesanan = () => {
+    // Navigasi ke halaman BayarProduk
+    navigation.navigate('BayarProduk');
   };
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.TopPage}>
-          <Text style={styles.headers}>Detail Produk</Text>
+          <Text style={styles.headers}>Rincian Pesanan</Text>
         </View>
         <ScrollView>
-          {/* Gambar dan detail produk */}
+          {/* Gambar dan detail produk pertama */}
           <View style={styles.ProdukItem}>
             <Image
               style={styles.imageItem}
@@ -46,26 +40,10 @@ const DetailProduk = () => {
                 Ini Merupakan Judul Produk Makanan
               </Text>
               <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-
-              {/* Tombol Pesan dan Add to Cart */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonPesan]}
-                  onPress={handlePesan}
-                >
-                  <Text style={styles.buttonText}>Pesan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonAddToCart]}
-                  onPress={handleAddToCart}
-                >
-                  <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.harga}>Rp 50.000</Text>
             </View>
           </View>
-          <View style={styles.margin} />
-          {/* Item produk kedua */}
+          {/* Gambar dan detail produk kedua */}
           <View style={styles.ProdukItem}>
             <Image
               style={styles.imageItem}
@@ -80,26 +58,10 @@ const DetailProduk = () => {
                 Ini Merupakan Judul Produk Makanan
               </Text>
               <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-
-              {/* Tombol Pesan dan Add to Cart */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonPesan]}
-                  onPress={handlePesan}
-                >
-                  <Text style={styles.buttonText}>Pesan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonAddToCart]}
-                  onPress={handleAddToCart}
-                >
-                  <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.harga}>Rp 50.000</Text>
             </View>
           </View>
-          <View style={styles.margin} />
-          {/* Item produk ketiga */}
+          {/* Gambar dan detail produk ketiga */}
           <View style={styles.ProdukItem}>
             <Image
               style={styles.imageItem}
@@ -114,27 +76,22 @@ const DetailProduk = () => {
                 Ini Merupakan Judul Produk Makanan
               </Text>
               <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-
-              {/* Tombol Pesan dan Add to Cart */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonPesan]}
-                  onPress={handlePesan}
-                >
-                  <Text style={styles.buttonText}>Pesan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonAddToCart]}
-                  onPress={handleAddToCart}
-                >
-                  <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
+              <Text style={styles.harga}>Rp 50.000</Text>
             </View>
           </View>
-          <View style={styles.margin} />
-          {/* ... (dan seterusnya) */}
+          {/* Keterangan Total Bayar */}
+          <View style={styles.totalBayarContainer}>
+            <Text style={styles.totalBayarText}>Total Bayar:</Text>
+            <Text style={styles.totalBayarHarga}>Rp 150.000</Text>
+          </View>
         </ScrollView>
+        {/* Tombol Bayar Pesanan */}
+        <TouchableOpacity
+          style={styles.buttonBayar}
+          onPress={handleBayarPesanan}
+        >
+          <Text style={styles.buttonText}>Bayar Pesanan</Text>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -143,6 +100,7 @@ const DetailProduk = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 20, // Menambahkan margin bottom pada kontainer utama
   },
   headers: {
     fontFamily: 'Poppins-Bold',
@@ -187,35 +145,38 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 11,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
+  harga: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 18,
+    color: '#FC6011',
+    marginTop: 10,
   },
-  button: {
-    flex: 1,
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderColor: 'white',
-    justifyContent: 'center',
+  totalBayarContainer: {
+    marginTop: 20,
     alignItems: 'center',
   },
-  buttonPesan: {
-    backgroundColor: '#FC6011',
-    marginRight: 10,
+  totalBayarText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 16,
   },
-  buttonAddToCart: {
-    backgroundColor: '#4CAF50',
-    marginLeft: 10,
+  totalBayarHarga: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 18,
+    color: '#FC6011',
+    marginTop: 10,
+  },
+  buttonBayar: {
+    alignSelf: 'center',
+    backgroundColor: '#FC6011',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    marginTop: 10,
   },
   buttonText: {
     fontFamily: 'Poppins-Regular',
     fontSize: 14,
     color: 'white',
-    textAlign: 'center',
-  },
-  margin: {
-    marginVertical: 10,
   },
 });
 
