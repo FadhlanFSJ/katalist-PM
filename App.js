@@ -10,6 +10,8 @@ import Login from "./screens/login";
 import SignUp from "./screens/signup";
 import AllStore from './screens/AllStore';
 import DetailStore from './screens/DetailStore';
+import ProfileScreen from "./screens/Profile";
+import EditProfileScreen from './screens/Edit-Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +31,8 @@ const MainApp = () => {
     async function loadFonts() {
       await Font.loadAsync({
         'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
-        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf')
+        'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+        // 'Poppins-Black' : require('./assets/fonts/Popppins-Black.ttf')
       });
       setIsFontLoaded(true);
     }
@@ -61,6 +64,9 @@ const MainApp = () => {
           />
           <Stack.Screen name="AllStore" component={AllStore} />
           <Stack.Screen name="DetailStore" component={DetailStore} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </View>
