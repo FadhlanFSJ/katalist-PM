@@ -11,7 +11,8 @@ import {
     Button,
     TextInput,
     TouchableOpacity,
-    Image} from 'react-native';
+    Image
+} from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,7 +21,7 @@ import React, { useEffect, useState } from 'react';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const Login = ({ navigation}) => {
+const Login = ({ navigation }) => {
 
     // Sign-In-Google
     const [userInfo, setUserInfo] = useState(null);
@@ -32,34 +33,34 @@ const Login = ({ navigation}) => {
         signInWithGoogle();
     }, [response])
 
-    async function signInWithGoogle(){
+    async function signInWithGoogle() {
         const user = await AsyncStorage.getItem('@user');
 
-        if(!user){
-            if(response?.type === 'success'){
+        if (!user) {
+            if (response?.type === 'success') {
                 await getuserInfo(response.authentication.accessToken);
             }
-            
-        } else{
+
+        } else {
             setUserInfo(JSON.parse(user));
         }
     };
 
     const getuserInfo = async (token) => {
-        if(!token) return;
+        if (!token) return;
 
-        try{
+        try {
             const response = await fetch(
                 'https://www.googleapis.com/userinfo/v2/me',
                 {
-                    headers: {Authorization: 'Bearer ${token}'}
+                    headers: { Authorization: 'Bearer ${token}' }
                 }
             );
 
             const user = await response.json();
             await AsyncStorage.setItem('@user', JSON.stringify(user));
             setUserInfo(user);
-        } catch(error){
+        } catch (error) {
 
         }
     };
@@ -73,55 +74,55 @@ const Login = ({ navigation}) => {
 
     useEffect(() => {
         const loadUserData = async () => {
-          try {
-            const storedUserData = await AsyncStorage.getItem('userData');
-            if (storedUserData) {
-              const userData = JSON.parse(storedUserData);
-              setUsername(userData.username);
+            try {
+                const storedUserData = await AsyncStorage.getItem('userData');
+                if (storedUserData) {
+                    const userData = JSON.parse(storedUserData);
+                    setUsername(userData.username);
+                }
+            } catch (error) {
+                console.error('Error loading user data from AsyncStorage:', error);
             }
-          } catch (error) {
-            console.error('Error loading user data from AsyncStorage:', error);
-          }
         };
-    
+
         loadUserData();
     }, []); // Efek hanya dijalankan saat komponen dimuat
 
     const handleLogin = async () => {
         if (username.trim() === '') {
-          setUsernameError(true);
+            setUsernameError(true);
         } else {
-          setUsernameError(false);
+            setUsernameError(false);
         }
-      
+
         if (password.trim() === '') {
-          setPasswordError(true);
+            setPasswordError(true);
         } else {
-          setPasswordError(false);
+            setPasswordError(false);
         }
-      
+
         if (!usernameError && !passwordError) {
-          try {
-            const storedUserData = await AsyncStorage.getItem('userData');
-            if (storedUserData) {
-              const userData = JSON.parse(storedUserData);
-      
-              if (userData.username === username && userData.password === password) {
-                setLoginError('');
-                navigation.navigate("AllStore", {username});
-              } else {
-                setLoginError('Username atau password salah');
-              }
-            } else {
-              setLoginError('Tidak ada data pengguna yang tersimpan');
+            try {
+                const storedUserData = await AsyncStorage.getItem('userData');
+                if (storedUserData) {
+                    const userData = JSON.parse(storedUserData);
+
+                    if (userData.username === username && userData.password === password) {
+                        setLoginError('');
+                        navigation.navigate("AllStore", { username });
+                    } else {
+                        setLoginError('Username atau password salah');
+                    }
+                } else {
+                    setLoginError('Tidak ada data pengguna yang tersimpan');
+                }
+            } catch (error) {
+                console.error('Error loading user data from AsyncStorage:', error);
+                setLoginError('Terjadi kesalahan saat login');
             }
-          } catch (error) {
-            console.error('Error loading user data from AsyncStorage:', error);
-            setLoginError('Terjadi kesalahan saat login');
-          }
         }
-      };
-      
+    };
+
     return (
         <View style={styles.container}>
             <Image
@@ -132,12 +133,12 @@ const Login = ({ navigation}) => {
             <Text style={styles.greeting}>Silahkan Login atau buat akun dulu ya Katalur :)</Text>
 
             {loginError !== "" && (
-                    <Text style={styles.errorMessage}>{loginError}</Text>
+                <Text style={styles.errorMessage}>{loginError}</Text>
             )}
             <View style={styles.form}>
                 <Text style={styles.formTitle}>Username</Text>
                 <TextInput
-                    style={[styles.textInput, usernameError  && styles.errorForm]}
+                    style={[styles.textInput, usernameError && styles.errorForm]}
                     value={username}
                     onChangeText={(text) => setUsername(text)}
                 />
@@ -146,7 +147,7 @@ const Login = ({ navigation}) => {
             <View style={styles.form}>
                 <Text style={styles.formTitle}>Password</Text>
                 <TextInput
-                    style={[styles.textInput, passwordError  && styles.errorForm]}
+                    style={[styles.textInput, passwordError && styles.errorForm]}
                     secureTextEntry={true}
                     value={password}
                     onChangeText={(text) => setPassword(text)}
@@ -168,8 +169,8 @@ const Login = ({ navigation}) => {
             </View>
 
             <View>
-                <TouchableOpacity 
-                    style={{marginTop:10}}
+                <TouchableOpacity
+                    style={{ marginTop: 10 }}
                     onPress={() => navigation.navigate("SignUp")}
                 >
                     <Text style={styles.newAcc}>aku buat akun dulu aja deh</Text>
@@ -177,7 +178,7 @@ const Login = ({ navigation}) => {
             </View>
 
 
-            <Separator height={20}/>
+            <Separator height={20} />
 
             <View style={styles.googleAuth}>
                 <Text style={styles.contGoogle}>
@@ -187,12 +188,12 @@ const Login = ({ navigation}) => {
                     onPress={() => promptAsync()}
                 >
                     <Image
-                        style={{marginBottom: 10}}
+                        style={{ marginBottom: 10 }}
                         source={require("../assets/continue.png")}
                     />
                 </TouchableOpacity>
-                <Button title="delete" onPress={() => AsyncStorage.removeItem('@user')}/>
-                
+                <Button title="delete" onPress={() => AsyncStorage.removeItem('@user')} />
+
                 <Text style={styles.contGoogle}>
                     atau
                 </Text>
@@ -211,8 +212,8 @@ const Login = ({ navigation}) => {
 
 export default Login;
 
-const styles = StyleSheet.create ({
-    container : {
+const styles = StyleSheet.create({
+    container: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
@@ -224,53 +225,53 @@ const styles = StyleSheet.create ({
         },
     },
 
-    profile : {
+    profile: {
         width: 124,
         height: 124,
         marginBottom: 10,
 
     },
 
-    title : {
+    title: {
         fontWeight: "bold",
-        fontSize:30,
-        color:"#000000",
+        fontSize: 30,
+        color: "#000000",
         marginBottom: 20,
         fontFamily: 'Poppins-Black',
         lineHeight: 45
     },
 
-    greeting:{
+    greeting: {
         fontSize: 14,
         fontFamily: 'Poppins-Regular',
-        color:"#000000",
+        color: "#000000",
         lineHeight: 21,
         marginBottom: 40,
         textAlign: "center"
     },
 
-    formTitle : {
+    formTitle: {
         fontFamily: 'Poppins-Black',
         fontSize: 16,
         fontWeight: 'bold',
-        color:'#000000',
+        color: '#000000',
         marginBottom: 10
     },
-    
-    form : {
+
+    form: {
         marginBottom: 20
     },
 
-    textInput : {
+    textInput: {
         width: 313,
         height: 39,
         borderRadius: 12,
         borderWidth: 1,
         paddingLeft: 10,
-    
+
     },
 
-    forgotPass : {
+    forgotPass: {
         fontFamily: 'Poppins-Regular',
         fontSize: 12,
         lineHeight: 15,
@@ -278,7 +279,7 @@ const styles = StyleSheet.create ({
         marginRight: 205
     },
 
-    button : {
+    button: {
         backgroundColor: '#FC6011',
         width: 124,
         height: 36,
@@ -287,7 +288,7 @@ const styles = StyleSheet.create ({
         paddingTop: 5
     },
 
-    textLogin : {
+    textLogin: {
         color: "#FFFFFF",
         fontFamily: 'Poppins-Regular',
         fontSize: 16,
@@ -296,7 +297,7 @@ const styles = StyleSheet.create ({
         textAlign: "center",
     },
 
-    newAcc : {
+    newAcc: {
         fontFamily: 'Poppins-Regular',
         lineHeight: 16.5,
         fontSize: 11,
@@ -304,7 +305,7 @@ const styles = StyleSheet.create ({
         color: "#FC6011",
     },
 
-    googleAuth : {
+    googleAuth: {
         width: 257.36,
         height: 130,
         margin: 6,
@@ -321,7 +322,7 @@ const styles = StyleSheet.create ({
         paddingBottom: 10,
     },
 
-    katalog :{
+    katalog: {
         width: 210,
         height: 30,
         borderRadius: 12,
@@ -330,7 +331,7 @@ const styles = StyleSheet.create ({
         paddingTop: 5,
     },
 
-    errorForm : {
+    errorForm: {
         borderColor: "red"
     },
 
