@@ -12,7 +12,6 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from 'react';
 
 // Assume you have already set up your navigation stack
 
@@ -45,7 +44,7 @@ export default function AllStore({ route }) {
   const [profileImage, setProfileImage] = useState(null);
 
   const handleProfile = () => {
-      navigation.navigate("Profile");
+    navigation.navigate("Profile");
   };
   const getData = async () => {
     try {
@@ -89,17 +88,17 @@ export default function AllStore({ route }) {
         <View style={styles.TopPage}>
           <Text style={styles.headers}>Hi {username} !</Text>
           <TouchableOpacity style={styles.profile} onPress={handleProfile}>
-                {profileImage ? (
-                <Image source={{ uri: profileImage }} style={styles.profileImage} />
-                 ) : (
-                  <View style={styles.imageContainer}>
-                       <Image
-                            source={require('../assets/user_icon.png')}
-                            style={styles.profileImage}
-                            />
-                       </View>
-                        )}
-            </TouchableOpacity> 
+            {profileImage ? (
+              <Image source={{ uri: profileImage }} style={styles.profileImage} />
+            ) : (
+              <View style={styles.imageContainer}>
+                <Image
+                  source={require('../assets/user_icon.png')}
+                  style={styles.profileImage}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
         </View>
         <View style={styles.search}>
           <TextInput
@@ -173,7 +172,7 @@ const styles = StyleSheet.create({
   },
   profile: {
     marginRight: 20,
-    marginBottom:5,
+    marginBottom: 5,
   },
   imageContainer: {
     position: 'relative',
@@ -210,7 +209,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginHorizontal: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   buttonKategori: {
     borderWidth: 1,
@@ -218,7 +217,8 @@ const styles = StyleSheet.create({
     padding: 3,
     marginRight: 10,
     borderColor: 'white',
-    backgroundColor: '#F4F4F8'
+    backgroundColor: '#F4F4F8',
+    maxHeight: 30
   },
   textKategori: {
     fontFamily: 'Poppins-Regular',
