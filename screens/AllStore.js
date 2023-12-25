@@ -11,6 +11,7 @@ import {
   FlatList,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from 'react';
 
 // Assume you have already set up your navigation stack
 
@@ -21,6 +22,12 @@ export default function AllStore({ route }) {
 
   const handleCategoryPress = (category) => {
     setSelectedCategory(category);
+  };
+
+  const [profileImage, setProfileImage] = useState(null);
+
+  const handleProfile = () => {
+      navigation.navigate("Profile");
   };
 
   const storeData = [
@@ -90,6 +97,18 @@ export default function AllStore({ route }) {
       <View style={styles.container}>
         <View style={styles.TopPage}>
           <Text style={styles.headers}>Hi {username} !</Text>
+          <TouchableOpacity style={styles.profile} onPress={handleProfile}>
+                {profileImage ? (
+                <Image source={{ uri: profileImage }} style={styles.profileImage} />
+                 ) : (
+                  <View style={styles.imageContainer}>
+                       <Image
+                            source={require('../assets/user_icon.png')}
+                            style={styles.profileImage}
+                            />
+                       </View>
+                        )}
+            </TouchableOpacity> 
         </View>
         <View style={styles.search}>
           <TextInput
@@ -156,6 +175,21 @@ const styles = StyleSheet.create({
   TopPage: {
     paddingTop: StatusBar.currentHeight || 0,
     marginTop: 25,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  profile: {
+    marginRight: 20,
+    marginBottom:5,
+  },
+  imageContainer: {
+    position: 'relative',
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 75,
   },
   search: {
     marginTop: 10,
