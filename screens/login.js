@@ -109,7 +109,7 @@ const Login = ({ navigation }) => {
 
                     if (userData.username === username && userData.password === password) {
                         setLoginError('');
-                        navigation.navigate("AllStore", { username });
+                        navigation.navigate("BottomNavigator", { username });
                     } else {
                         setLoginError('Username atau password salah');
                     }
@@ -199,7 +199,7 @@ const Login = ({ navigation }) => {
                 </Text>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("AllStore")}
+                    onPress={() => navigation.navigate("BottomNavigator")}
                 >
                     <Text style={styles.katalog}>
                         Aku Cuma Mau Lihat Katalog
