@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,56 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  FlatList
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const DetailProduk = () => {
+  const route = useRoute();
   const navigation = useNavigation();
+  const store = route.params || {};
+
+  console.log("Store : ", store);
 
   const handlePesan = () => {
     // Navigasi ke halaman DetailProduk
     navigation.navigate('DetailProduk');
   };
+
+  renderItem = ({ item }) => {
+    return (
+      <View style={styles.ProdukItem}>
+        <Image
+          style={styles.imageItem}
+          source={{
+            uri:
+              item.imageProduk,
+          }}
+        />
+        <View style={styles.ProdukDetail}>
+          <Text style={styles.judulProduk}>
+            {item.nama_produk}
+          </Text>
+          <Text style={styles.deskripsiProduk}>Rp. {item.harga}</Text>
+          <Text style={styles.stokProduk}>Stok yang tersedia : {item.stok}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={[styles.button, styles.buttonPesan]}
+              onPress={handlePesan}
+            >
+              <Text style={styles.buttonText}>Pesan</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.buttonAddToCart]}
+              onPress={handleAddToCart}
+            >
+              <Text style={styles.buttonText}>Add to Cart</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    )
+  }
 
   const handleAddToCart = () => {
     // Implementasi logika untuk tombol "Add to Cart"
@@ -28,113 +68,14 @@ const DetailProduk = () => {
     <>
       <View style={styles.container}>
         <View style={styles.TopPage}>
-          <Text style={styles.headers}>Detail Produk</Text>
+          <Text style={styles.headers}>Detail Produk Toko</Text>
         </View>
-        <ScrollView>
-          {/* Gambar dan detail produk */}
-          <View style={styles.ProdukItem}>
-            <Image
-              style={styles.imageItem}
-              source={{
-                uri:
-                  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-            />
-            <View style={styles.ProdukDetail}>
-              <Text style={styles.kategoriProduk}>| Makanan</Text>
-              <Text style={styles.judulProduk}>
-                Ini Merupakan Judul Produk Makanan
-              </Text>
-              <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-
-              {/* Tombol Pesan dan Add to Cart */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonPesan]}
-                  onPress={handlePesan}
-                >
-                  <Text style={styles.buttonText}>Pesan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonAddToCart]}
-                  onPress={handleAddToCart}
-                >
-                  <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.margin} />
-          {/* Item produk kedua */}
-          <View style={styles.ProdukItem}>
-            <Image
-              style={styles.imageItem}
-              source={{
-                uri:
-                  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-            />
-            <View style={styles.ProdukDetail}>
-              <Text style={styles.kategoriProduk}>| Makanan</Text>
-              <Text style={styles.judulProduk}>
-                Ini Merupakan Judul Produk Makanan
-              </Text>
-              <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-
-              {/* Tombol Pesan dan Add to Cart */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonPesan]}
-                  onPress={handlePesan}
-                >
-                  <Text style={styles.buttonText}>Pesan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonAddToCart]}
-                  onPress={handleAddToCart}
-                >
-                  <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.margin} />
-          {/* Item produk ketiga */}
-          <View style={styles.ProdukItem}>
-            <Image
-              style={styles.imageItem}
-              source={{
-                uri:
-                  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-            />
-            <View style={styles.ProdukDetail}>
-              <Text style={styles.kategoriProduk}>| Makanan</Text>
-              <Text style={styles.judulProduk}>
-                Ini Merupakan Judul Produk Makanan
-              </Text>
-              <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-
-              {/* Tombol Pesan dan Add to Cart */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonPesan]}
-                  onPress={handlePesan}
-                >
-                  <Text style={styles.buttonText}>Pesan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonAddToCart]}
-                  onPress={handleAddToCart}
-                >
-                  <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-          <View style={styles.margin} />
-          {/* ... (dan seterusnya) */}
-        </ScrollView>
+        <FlatList
+          data={(store.data.produk || []).flat()}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item.id_produk.toString()}
+        />
       </View>
     </>
   );
@@ -143,6 +84,7 @@ const DetailProduk = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 8
   },
   headers: {
     fontFamily: 'Poppins-Bold',
@@ -187,10 +129,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
     fontSize: 11,
   },
+  stokProduk: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 11,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginTop: 10,
   },
   button: {
     flex: 1,
