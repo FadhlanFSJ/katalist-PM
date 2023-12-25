@@ -5,22 +5,26 @@
             "nama": "Toko Jaya Abadi",
             "alamat" : "Jl. Wonogiri No. 16",
             "kategori" : "bangunan",
+            "imageToko": "https://images.unsplash.com/photo-1519520104014-df63821cb6f9?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "produk": [
                 {
                     "id_produk": 101,
                     "nama_produk": "Pipa 2 Meter",
+                    "imageProduk": "https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga" : 10000,
                     "stok" : 10
                 },
                 {
                     "id_produk": 102,
                     "nama_produk": "Cat Merah",
+                    "imageProduk": "https://plus.unsplash.com/premium_photo-1664300244822-4dff6f252d2f?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga" : 50000,
                     "stok" : 10
                 },
                 {
                     "id_produk": 103,
                     "nama_produk": "Cat Hitam",
+                    "imageProduk": "https://images.unsplash.com/photo-1541542509806-6371b7b0a265?q=80&w=1514&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga" : 50000,
                     "stok": 10
                 }
@@ -31,22 +35,26 @@
             "nama" : "Chicken Smash Pak Rusdi",
             "alamat": "Jl. Ah tong No 203",
             "kategori" : "makanan",
+            "imageToko": "https://images.unsplash.com/photo-1695653422902-1bea566871c6?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "produk": [
                 {
                     "id_produk" : 201,
                     "nama_produk" : "Ayam Kampus Legit",
+                    "imageProduk": "https://images.unsplash.com/photo-1626082929543-5bab0f090c42?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga" : 15000,
                     "stok" : 10
                 },
                 {
                     "id_produk" : 202,
                     "nama_produk" : "Es Teh",
+                    "imageProduk": "https://images.unsplash.com/photo-1601390395693-364c0e22031a?q=80&w=1631&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga" : 3500,
                     "stok" : 10
                 },
                 {
                     "id_produk" : 203,
                     "nama_produk" : "Nugget Geprek",
+                    "imageProduk": "https://images.unsplash.com/photo-1562967914-01efa7e87832?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga" : 12500,
                     "stok": 10
                 }
@@ -57,19 +65,65 @@
             "nama" : "Toko Pak Abdi Furnitur",
             "alamat": "Jl. Pegangsaan No 45",
             "kategori": "furnitur",
+            "imageToko": "https://images.unsplash.com/photo-1514988081842-feeaeac260e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             "produk": [
                 {
-                    "id" : 301,
+                    "id_produk" : 301,
                     "nama_produk" : "Kursi Lipat",
+                    "imageProduk": "https://images.unsplash.com/photo-1618055620740-24c9cf2305e5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga": 45000,
                     "stok": 5
                 },
                 {
-                    "id" : 302,
+                    "id_produk" : 302,
                     "nama_produk": "Meja Kasur",
+                    "imageProduk": "https://images.unsplash.com/photo-1586574086333-f34e45b76aa3?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                     "harga": 75000,
                     "stok" : 10
                 }
+            ]
+        },
+        {
+            "id": 4,
+            "nama" : "Toko Pak Abdi Furnitur",
+            "alamat": "Jl. Pegangsaan No 45",
+            "kategori": "furnitur",
+            "imageToko": "https://images.unsplash.com/photo-1514988081842-feeaeac260e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "produk": [
+                {
+                    "id_produk" : 401,
+                    "nama_produk" : "Kursi Lipat",
+                    "imageProduk": "https://images.unsplash.com/photo-1618055620740-24c9cf2305e5?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "harga": 45000,
+                    "stok": 5
+                },
+                {
+                    "id_produk" : 402,
+                    "nama_produk": "Meja Kasur",
+                    "imageProduk": "https://images.unsplash.com/photo-1586574086333-f34e45b76aa3?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    "harga": 75000,
+                    "stok" : 10
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "nama" : "Toko Pak Abdi Furnitur",
+            "alamat": "Jl. Pegangsaan No 45",
+            "kategori": "furnitur",
+            "imageToko": "https://images.unsplash.com/photo-1514988081842-feeaeac260e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "produk":[
+
+            ]
+        },
+        {
+            "id": 6,
+            "nama" : "Toko Pak Abdi Furnitur",
+            "alamat": "Jl. Pegangsaan No 45",
+            "kategori": "furnitur",
+            "imageToko": "https://images.unsplash.com/photo-1514988081842-feeaeac260e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            "produk":[
+
             ]
         }
     ]

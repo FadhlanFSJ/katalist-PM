@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   View,
   Text,
@@ -18,48 +19,40 @@ export default function AllStore({ route }) {
   const navigation = useNavigation();
   const { username } = route.params || {};
   const [selectedCategory, setSelectedCategory] = React.useState("Semua");
+  const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const handleCategoryPress = (category) => {
-    setSelectedCategory(category);
+  const handleCategoryPress = async (category) => {
+    const lowerCaseKategori = category.toLowerCase();
+    console.log(lowerCaseKategori)
+    try {
+      if (lowerCaseKategori === "semua") {
+        getData();
+      } else {
+        // filteredData = data.filter(item => item.kategori.toLowerCase() === lowerCaseKategori);
+        const response = await axios.get(`http://192.168.1.8:3001/toko?kategori=${lowerCaseKategori}`)
+        setData(response.data)
+      }
+      setSelectedCategory(category);
+      console.log(data);
+    } catch (error) {
+      console.error('Error filtering data: ', error.message);
+      return [];
+    }
+
   };
 
-  const storeData = [
-    {
-      id: '1',
-      category: 'Sembako',
-      title: 'Toko Sembako Ah Tong - Wonokitri',
-      description: 'Jl Wonokitri Kidul 9 Surabaya',
-      imageUrl: 'https://images.unsplash.com/photo-1682687218904-de46ed992b58?q=80&w=1543&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    {
-        id: '2',
-        category: 'Makanan & Minuman',
-        title: 'Chicken Smash Pak Rusdi - Ketintang',
-        description: 'Jl. Ketintang No 5 Surabaya',
-        imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    {
-        id: '3',
-        category: 'Furnitur',
-        title: 'Ace Hardware',
-        description: 'Royal Plaza Mall, Lt. 2, Ketintang, Surabaya',
-        imageUrl: 'https://images.unsplash.com/photo-1514988081842-feeaeac260e3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    {
-        id: '4',
-        category: 'Material',
-        title: 'Toko Jaya Abadi - Wiyung',
-        description: 'Jl. Wiyung No 45, Surabaya',
-        imageUrl: 'https://images.unsplash.com/photo-1595414440701-da000c40df9c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-    {
-        id: '5',
-        category: 'Aksesoris',
-        title: 'Miniso - Royal Plaza',
-        description: 'Royal Plaza Mall, Lt. G Jl. Ahmad Yani, Surabaya',
-        imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-    },
-  ];
+  const getData = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.8:3001/toko');
+      setData(response.data)
+    } catch (error) {
+      console.error("Error Getting data: ", error)
+    }
+  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   const renderItem = ({ item }) => {
     return (
@@ -69,11 +62,11 @@ export default function AllStore({ route }) {
       >
         <View style={styles.DataToko}>
           <View style={styles.card}>
-            <Image source={{ uri: item.imageUrl }} style={styles.cardImage} />
+            <Image source={{ uri: item.imageToko }} style={styles.cardImage} />
             <View style={styles.cardDetails}>
-              <Text style={styles.cardKategori}>{`| ${item.category}`}</Text>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              <Text style={styles.cardDescription}>{item.description}</Text>
+              <Text style={styles.cardKategori}>{`| ${item.kategori}`}</Text>
+              <Text style={styles.cardTitle}>{item.nama}</Text>
+              <Text style={styles.cardDescription}>{item.alamat}</Text>
             </View>
           </View>
         </View>
@@ -82,7 +75,7 @@ export default function AllStore({ route }) {
   };
 
   const navigateToDetailStore = (store) => {
-    navigation.navigate("DetailStore", { store });
+    navigation.navigate("DetailStore", { data: store });
   };
 
   return (
@@ -104,7 +97,7 @@ export default function AllStore({ route }) {
           <Text style={{ fontFamily: 'Poppins-Bold' }}>Kategori Toko</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View style={styles.kategori}>
-              {["Semua", "Makanan & Minuman", "Bangunan", "Parfum"].map((category, index) => {
+              {["Semua", "Makanan", "Bangunan", "Parfum", "Furnitur"].map((category, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
@@ -131,10 +124,11 @@ export default function AllStore({ route }) {
             </View>
           </ScrollView>
           <FlatList
-            data={storeData}
-            keyExtractor={(item) => item.id}
+            data={data}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
+            refreshing={refreshing}
           />
         </View>
       </View>
