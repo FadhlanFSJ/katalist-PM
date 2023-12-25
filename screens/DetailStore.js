@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  FlatList
+  FlatList,
+  Alert
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -16,13 +17,31 @@ const DetailProduk = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const store = route.params || {};
+  const [keranjang, setKeranjang] = useState([]);
+  const [totalHarga, setTotalHarga] = useState(0);
 
-  console.log("Store : ", store);
+  // console.log("Store : ", store);
 
-  const handlePesan = () => {
-    // Navigasi ke halaman DetailProduk
+  const handlePesan = (item) => {
     navigation.navigate('DetailProduk');
   };
+
+  const pesan = ({ item }) => {
+    if (totalHarga === 0) {
+      Alert.alert(
+        'Keranjang Kosong',
+        'Anda belum menambahkan produk ke keranjang. Silahkan tambahkan produk terlebih dahulu!',
+        [
+          {
+            text: 'OK',
+            onPress: () => console.log('OK Pressed')
+          }
+        ]
+      )
+    } else {
+      navigation.navigate('DetailProduk', { data: item })
+    }
+  }
 
   renderItem = ({ item }) => {
     return (
@@ -49,7 +68,7 @@ const DetailProduk = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, styles.buttonAddToCart]}
-              onPress={handleAddToCart}
+              onPress={() => handleAddToCart(item)}
             >
               <Text style={styles.buttonText}>Add to Cart</Text>
             </TouchableOpacity>
@@ -59,9 +78,11 @@ const DetailProduk = () => {
     )
   }
 
-  const handleAddToCart = () => {
-    // Implementasi logika untuk tombol "Add to Cart"
-    console.log('Tombol Add to Cart diklik');
+  const handleAddToCart = (item) => {
+    setKeranjang((prevKeranjang) => [...prevKeranjang, item]);
+    setTotalHarga((prevTotalHarga) => prevTotalHarga + item.harga);
+    console.log(`Menambahkan Data ${item} pada Keranjang!`);
+    console.log(keranjang);
   };
 
   return (
@@ -76,6 +97,13 @@ const DetailProduk = () => {
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id_produk.toString()}
         />
+        <View style={styles.totalHarga}>
+          <Text style={styles.textTotalHargaHeader}>Total Harga:</Text>
+          <Text style={styles.numberTotalHarga}>Rp : {totalHarga}</Text>
+          <TouchableOpacity style={styles.buttonPesanCart} onPress={() => pesan(keranjang)}>
+            <Text style={styles.buttonPesanCartText}>Pesan</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </>
   );
@@ -144,7 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: 'white',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   buttonPesan: {
     backgroundColor: '#FC6011',
@@ -163,6 +191,35 @@ const styles = StyleSheet.create({
   margin: {
     marginVertical: 10,
   },
+  totalHarga: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white', // Warna latar belakang sesuai kebutuhan
+    padding: 16,
+    flexDirection: 'column',
+  },
+  textTotalHargaHeader: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    alignItems: 'flex-start'
+  },
+  numberTotalHarga: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 20,
+    alignItems: 'flex-start',
+  },
+  buttonPesanCart: {
+    backgroundColor: '#FC6011',
+    alignItems: 'center',
+    borderRadius: 8,
+    elevation: 7
+  },
+  buttonPesanCartText: {
+    color: 'white',
+    fontFamily: 'Poppins-Regular'
+  }
 });
 
 export default DetailProduk;
