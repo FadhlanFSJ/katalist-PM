@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+
 const DetailProduk = () => {
   const navigation = useNavigation();
 
