@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const DetailProduk = () => {
   const navigation = useNavigation();
@@ -23,6 +23,12 @@ const DetailProduk = () => {
     <>
       <View style={styles.container}>
         <View style={styles.TopPage}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
           <Text style={styles.headers}>Rincian Pesanan</Text>
         </View>
         <ScrollView>
@@ -101,7 +107,7 @@ const DetailProduk = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 20, // Menambahkan margin bottom pada kontainer utama
+    marginBottom: 20,
   },
   headers: {
     fontFamily: 'Poppins-Bold',
@@ -112,6 +118,12 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    top: 16,
+    zIndex: 1,
   },
   ProdukItem: {
     backgroundColor: '#fff',

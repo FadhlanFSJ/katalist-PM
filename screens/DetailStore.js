@@ -12,6 +12,7 @@ import {
   Alert
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const DetailProduk = () => {
   const route = useRoute();
@@ -20,13 +21,18 @@ const DetailProduk = () => {
   const [keranjang, setKeranjang] = useState([]);
   const [totalHarga, setTotalHarga] = useState(0);
 
-  // console.log("Store : ", store);
-
   const handlePesan = (item) => {
-    navigation.navigate('DetailProduk');
+    navigation.navigate('DetailProduk', {
+      selectedProducts: keranjang,
+      selectedProductInfo: {
+        imageProduk: item.imageProduk,
+        nama_produk: item.nama_produk,
+        harga: item.harga,
+      },
+    });
   };
 
-  const pesan = ({ item }) => {
+  const pesan = () => {
     if (totalHarga === 0) {
       Alert.alert(
         'Keranjang Kosong',
@@ -34,35 +40,32 @@ const DetailProduk = () => {
         [
           {
             text: 'OK',
-            onPress: () => console.log('OK Pressed')
-          }
+            onPress: () => console.log('OK Pressed'),
+          },
         ]
-      )
+      );
     } else {
-      navigation.navigate('DetailProduk', { data: item })
+      navigation.navigate('DetailProduk', { data: keranjang });
     }
-  }
+  };
 
-  renderItem = ({ item }) => {
+  const renderItem = ({ item }) => {
     return (
       <View style={styles.ProdukItem}>
         <Image
           style={styles.imageItem}
           source={{
-            uri:
-              item.imageProduk,
+            uri: item.imageProduk,
           }}
         />
         <View style={styles.ProdukDetail}>
-          <Text style={styles.judulProduk}>
-            {item.nama_produk}
-          </Text>
+          <Text style={styles.judulProduk}>{item.nama_produk}</Text>
           <Text style={styles.deskripsiProduk}>Rp. {item.harga}</Text>
           <Text style={styles.stokProduk}>Stok yang tersedia : {item.stok}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.buttonPesan]}
-              onPress={handlePesan}
+              onPress={() => handlePesan(item)}
             >
               <Text style={styles.buttonText}>Pesan</Text>
             </TouchableOpacity>
@@ -75,20 +78,32 @@ const DetailProduk = () => {
           </View>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   const handleAddToCart = (item) => {
-    setKeranjang((prevKeranjang) => [...prevKeranjang, item]);
+    setKeranjang((prevKeranjang) => [item, ...prevKeranjang]);
     setTotalHarga((prevTotalHarga) => prevTotalHarga + item.harga);
     console.log(`Menambahkan Data ${item} pada Keranjang!`);
     console.log(keranjang);
+  };
+
+  const handleRemoveFromCart = () => {
+    // Reset the cart and total price
+    setKeranjang([]);
+    setTotalHarga(0);
   };
 
   return (
     <>
       <View style={styles.container}>
         <View style={styles.TopPage}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
+          </TouchableOpacity>
           <Text style={styles.headers}>Detail Produk Toko</Text>
         </View>
         <FlatList
@@ -100,8 +115,17 @@ const DetailProduk = () => {
         <View style={styles.totalHarga}>
           <Text style={styles.textTotalHargaHeader}>Total Harga:</Text>
           <Text style={styles.numberTotalHarga}>Rp : {totalHarga}</Text>
-          <TouchableOpacity style={styles.buttonPesanCart} onPress={() => pesan(keranjang)}>
+          <TouchableOpacity
+            style={styles.buttonPesanCart}
+            onPress={() => pesan(keranjang)}
+          >
             <Text style={styles.buttonPesanCartText}>Pesan</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonRemoveFromCart}
+            onPress={handleRemoveFromCart}
+          >
+            <Text style={styles.buttonRemoveFromCartText}>Hapus Keranjang</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -219,7 +243,24 @@ const styles = StyleSheet.create({
   buttonPesanCartText: {
     color: 'white',
     fontFamily: 'Poppins-Regular'
-  }
+  },
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    top: 16,
+    zIndex: 1,
+  },
+  buttonRemoveFromCart: {
+    backgroundColor: '#FF5733',
+    alignItems: 'center',
+    borderRadius: 8,
+    elevation: 7,
+    marginTop: 10,
+  },
+  buttonRemoveFromCartText: {
+    color: 'white',
+    fontFamily: 'Poppins-Regular',
+  },
 });
 
 export default DetailProduk;

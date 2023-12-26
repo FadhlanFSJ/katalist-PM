@@ -6,6 +6,7 @@ import QRCode from 'react-native-qrcode-svg';
 const BayarProduk = () => {
   const navigation = useNavigation();
   const [countdown, setCountdown] = useState(120);
+  const [isCancelable, setIsCancelable] = useState(true);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -14,6 +15,12 @@ const BayarProduk = () => {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      setIsCancelable(false); 
+    }
+  }, [countdown, navigation]);
 
   const handleBatalkanPesanan = () => {
     Alert.alert(
@@ -27,7 +34,6 @@ const BayarProduk = () => {
         {
           text: 'Iya Batalkan',
           onPress: () => {
-            // Tambahkan logika pembatalan pesanan di sini
             alert('Pesanan berhasil dibatalkan');
             navigation.goBack();
           },
@@ -57,7 +63,7 @@ const BayarProduk = () => {
       <View style={styles.topContainer}>
         <QRCode value="QR Code data" size={200} />
         <Text style={styles.qrCodeText}>
-          Silahkan Scan QR Code ini menggunakan QRIS pada setiap aplikasi pembayaranSeperti Gopay, Shopeepay, BCA Mobile, dan aplikasi banking maupun e-wallet lainnya.
+          Silahkan Scan QR Code ini menggunakan QRIS pada setiap aplikasi pembayaran Seperti Gopay, Shopeepay, BCA Mobile, dan aplikasi banking maupun e-wallet lainnya.
         </Text>
         <Text style={[styles.qrCodeText, styles.marginBottom]}>
           Silahkan melakukan pembayaran sebelum waktu habis ({formatCountdown(countdown)})
@@ -67,6 +73,7 @@ const BayarProduk = () => {
         <TouchableOpacity
           style={[styles.button, styles.whiteButton]}
           onPress={handleBatalkanPesanan}
+          disabled={!isCancelable} 
         >
           <Text style={[styles.buttonText, styles.orangeText]}>Batalkan Pesanan</Text>
         </TouchableOpacity>
@@ -126,6 +133,11 @@ const styles = StyleSheet.create({
   },
   orangeText: {
     color: '#FC6011',
+  },
+  qrCodeImage: {
+    width: 200,
+    height: 200,
+    marginVertical: 8,
   },
 });
 

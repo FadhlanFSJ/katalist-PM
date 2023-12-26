@@ -16,6 +16,7 @@ import DetailProduk from "./screens/DetailProduk";
 import BayarProduk from "./screens/BayarProduk";
 import ProfileScreen from "./screens/Profile";
 import EditProfileScreen from './screens/Edit-Profile';
+import HistoryTransaksi from "./screens/HistoryTransaksi";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -55,7 +56,18 @@ const MainPageNavigator = () => {
 }
 
 const HistoryPageNavigator = () => {
-  //! Taruh Beberapa Halaman seperti Profile, Main Navigator
+  return (
+  <HistoryPage.Navigator
+    initialRouteName="HistoryTransaksi"
+    screenOptions={headerStyle}
+  >
+    <HistoryPage.Screen
+        name="HistoryTransaksi"
+        component={HistoryTransaksi}
+        options={{ headerShown: false }}
+      /> 
+  </HistoryPage.Navigator>  
+  )
 }
 
 const ProfilePageNavigator = () => {
