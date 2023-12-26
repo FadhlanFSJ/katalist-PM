@@ -18,11 +18,13 @@ import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Separator from "../components/separator";
 import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 
 WebBrowser.maybeCompleteAuthSession();
 
 const Login = ({ navigation }) => {
-
+    const loginNavigation = useNavigation();
     // Sign-In-Google
     const [userInfo, setUserInfo] = useState(null);
     const [request, response, promptAsync] = Google.useAuthRequest({
@@ -109,7 +111,7 @@ const Login = ({ navigation }) => {
 
                     if (userData.username === username && userData.password === password) {
                         setLoginError('');
-                        navigation.navigate("BottomNavigator", { username });
+                        navigation.navigate('BottomNavigator', { screen: 'Menu Utama' });
                     } else {
                         setLoginError('Username atau password salah');
                     }
@@ -180,7 +182,7 @@ const Login = ({ navigation }) => {
 
             <Separator height={20} />
 
-            <View style={styles.googleAuth}>
+            {/* <View style={styles.googleAuth}>
                 <Text style={styles.contGoogle}>
                     Lanjutkan dengan Google
                 </Text>
@@ -192,7 +194,7 @@ const Login = ({ navigation }) => {
                         source={require("../assets/continue.png")}
                     />
                 </TouchableOpacity>
-                <Button title="delete" onPress={() => AsyncStorage.removeItem('@user')} />
+                <Button title="delete" onPress={() => AsyncStorage.clear()} />
 
                 <Text style={styles.contGoogle}>
                     atau
@@ -205,7 +207,7 @@ const Login = ({ navigation }) => {
                         Aku Cuma Mau Lihat Katalog
                     </Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </View>
     );
 }

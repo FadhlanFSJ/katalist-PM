@@ -10,14 +10,14 @@ import {
     TouchableOpacity,
     Image,
     FlatList,
-    } from 'react-native';
+} from 'react-native';
 import React from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import Separator from "../components/separator";
 import { useState, useEffect } from 'react';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
@@ -34,46 +34,46 @@ const SignUp = ({navigation}) => {
 
     useEffect(() => {
         const initializeAsyncStorage = async () => {
-        //   await AsyncStorage.clear(); // Delete pas reload
+            //   await AsyncStorage.clear(); // Delete pas reload
         };
-    
+
         initializeAsyncStorage();
     }, []);
 
     const handleSignUp = async () => {
-        if(username.trim() === "") {
+        if (username.trim() === "") {
             setUsernameError(true);
-        } else{
+        } else {
             setUsernameError(false);
         }
 
-        if(password.trim() === "") {
+        if (password.trim() === "") {
             setPasswordError(true);
-        } else{
+        } else {
             setPasswordError(false);
         }
 
-        if(confirmPass.trim() === ""){
+        if (confirmPass.trim() === "") {
             setConfirmPassError(true);
-        } else{
+        } else {
             setConfirmPassError(false);
         }
 
-        if(email.trim() === ""){
+        if (email.trim() === "") {
             setEmailError(true);
-        } else{
+        } else {
             setEmailError(false);
         }
 
-        if(nama.trim() === ""){
+        if (nama.trim() === "") {
             setNamaError(true);
-        } else{
+        } else {
             setNamaError(false);
         }
 
-        if(phone.trim() === ""){
+        if (phone.trim() === "") {
             setPhoneError(true);
-        } else{
+        } else {
             setPhoneError(false);
         }
 
@@ -84,29 +84,30 @@ const SignUp = ({navigation}) => {
             !emailError &&
             !namaError &&
             !phoneError
-          ) {
+        ) {
             try {
-              const userData = {
-                username,
-                password,
-                email,
-                nama,
-                phone,
-              };
-      
-              await AsyncStorage.setItem('userData', JSON.stringify(userData));
-              console.log('Berhasil disimpan KATALUR');
-              navigation.navigate("AllStore", {username});
+                const userData = {
+                    username,
+                    password,
+                    email,
+                    nama,
+                    phone,
+                };
+                await AsyncStorage.setItem('userData', JSON.stringify(userData));
+                console.log('Berhasil disimpan KATALUR');
+                const dataUser = await AsyncStorage.getItem('userData');
+                console.log(dataUser)
+                navigation.navigate("Login", { username });
             } catch (error) {
-              console.log('Error saving data to AsyncStorage:');
+                console.log('Error saving data to AsyncStorage:', error);
             }
-          } else {
+        } else {
             setSignUpError('Lengkapi Form');
-          }
-        };
-      
+        }
+    };
 
-    return(
+
+    return (
         <ScrollView>
             <View style={styles.container}>
                 <Image
@@ -184,17 +185,17 @@ const SignUp = ({navigation}) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.googleAuth}>
+                {/* <View style={styles.googleAuth}>
                     <Text style={styles.contGoogle}>
                         Lanjutkan dengan Google
                     </Text>
                     <TouchableOpacity>
                         <Image
-                            style={{marginBottom: 10}}
+                            style={{ marginBottom: 10 }}
                             source={require("../assets/continue.png")}
                         />
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
         </ScrollView>
     )
@@ -202,8 +203,8 @@ const SignUp = ({navigation}) => {
 
 export default SignUp;
 
-const styles = StyleSheet.create ({
-    container : {
+const styles = StyleSheet.create({
+    container: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
@@ -215,61 +216,61 @@ const styles = StyleSheet.create ({
         },
     },
 
-    profile : {
+    profile: {
         width: 124,
         height: 124,
         marginBottom: 10,
         marginTop: 50
     },
 
-    title : {
+    title: {
         fontWeight: "bold",
-        fontSize:30,
-        color:"#000000",
+        fontSize: 30,
+        color: "#000000",
         marginBottom: 20,
         fontFamily: 'Poppins-Black',
         lineHeight: 45
     },
 
-    greeting:{
+    greeting: {
         fontSize: 14,
         fontFamily: "Poppins-Regular",
-        color:"#000000",
+        color: "#000000",
         lineHeight: 21,
         marginBottom: 40,
         textAlign: "center"
     },
 
-    formTitle : {
+    formTitle: {
         fontFamily: 'Poppins-Black',
         fontSize: 16,
         fontWeight: "bold",
-        color:"#000000",
+        color: "#000000",
         marginBottom: 10
     },
-    
-    form : {
+
+    form: {
         marginBottom: 20
     },
 
-    textInput : {
+    textInput: {
         width: 313,
         height: 39,
         borderRadius: 12,
         borderWidth: 1,
         paddingLeft: 10,
-    
+
     },
 
-    button : {
+    button: {
         backgroundColor: "#FC6011",
         width: 124,
         height: 36,
         borderRadius: 12,
-        
+
     },
 
-    textLogin : {
+    textLogin: {
         color: "#FFFFFF",
         fontFamily: "Poppins-Regular",
         fontSize: 16,
@@ -278,7 +279,7 @@ const styles = StyleSheet.create ({
         textAlign: "center",
     },
 
-    button : {
+    button: {
         backgroundColor: "#FC6011",
         width: 124,
         height: 36,
@@ -287,7 +288,7 @@ const styles = StyleSheet.create ({
         paddingTop: 5
     },
 
-    textLogin : {
+    textLogin: {
         color: "#FFFFFF",
         fontFamily: "Poppins-Regular",
         fontSize: 16,
@@ -296,13 +297,13 @@ const styles = StyleSheet.create ({
         textAlign: "center",
     },
 
-    googleAuth : {
+    googleAuth: {
         width: 257.36,
         height: 130,
         margin: 6,
         alignItems: "center",
         justifyContent: "center",
-    
+
     },
 
     contGoogle: {
@@ -314,7 +315,7 @@ const styles = StyleSheet.create ({
         paddingBottom: 10,
     },
 
-    errorForm : {
+    errorForm: {
         borderColor: "red"
     },
 

@@ -4,46 +4,63 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Image, FlatList } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HistoryTransaksi = () => {
   const navigation = useNavigation();
   const [tokoData, setTokoData] = useState([]);
+  const [historyBeli, setHistoryBeli] = useState([]);
 
   const getTokoData = async () => {
     try {
-      const response = await axios.get('http://192.168.1.4:3001/toko');
+      const response = await axios.get('http://192.168.1.8:3001/toko');
       setTokoData(response.data);
     } catch (error) {
       console.error('Error getting store data: ', error.message);
     }
   };
+  const getData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('purchaseHistory');
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        setHistoryBeli(parsedData)
+        console.log(parsedData)
+      }
+    } catch (error) {
+      console.error("Error : ", error)
+    }
+  }
 
   useEffect(() => {
-    getTokoData();
+    getData();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPress={() => navigateToDetailStore(item)}
-    >
-      <View style={styles.tokoItem}>
-        <View style={styles.card}>
-          <Image source={{ uri: item.imageToko }} style={styles.cardImage} />
-          <View style={styles.cardDetails}>
-            <Text style={styles.cardTitle}>{item.nama}</Text>
-            <Text style={styles.cardDescription}>{item.alamat}</Text>
-            <Text style={styles.cardText}>
-              Total Pembelian: {formatToRupiah(getTotalPembelian())}
-            </Text>
-            <Text style={[styles.cardText, { color: getStatusColor() }]}>
-              {getStatusText()}
-            </Text>
+  const renderItem = ({ item }) => {
+    const ProductInfo = item[0];
+    return (
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => navigateToDetailStore(item)}
+      >
+        <View style={styles.tokoItem}>
+          <View style={styles.card}>
+            <Image source={{ uri: ProductInfo.imageProduk }} style={styles.cardImage} />
+            <View style={styles.cardDetails}>
+              <Text style={styles.cardTitle}>{ProductInfo.nama_produk}</Text>
+              <Text style={styles.cardText}>
+                Total Pembelian: {ProductInfo.harga}
+              </Text>
+              <Text style={[styles.cardText, { color: getStatusColor() }]}>
+                {getStatusText()}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    )
+  }
+
 
   const navigateToDetailStore = (store) => {
     navigation.navigate('DetailStore', { data: store });
@@ -76,8 +93,8 @@ const HistoryTransaksi = () => {
     <View style={styles.container}>
       <Text style={styles.header}>History Transaksi</Text>
       <FlatList
-        data={tokoData}
-        keyExtractor={(item) => item.id.toString()}
+        data={historyBeli}
+        keyExtractor={(item) => item.id_keranjang}
         renderItem={renderItem}
       />
     </View>

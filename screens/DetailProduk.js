@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,50 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  FlatList,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const DetailProduk = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const selectedProduk = route.params.data;
+  const [totalHarga, setTotalHarga] = useState(0);
+
+  renderItem = ({ item }) => {
+    return (
+      <View style={styles.ProdukItem}>
+        <Image
+          style={styles.imageItem}
+          source={{
+            uri: item.imageProduk,
+          }}
+        />
+        <View style={styles.ProdukDetail}>
+          <Text style={styles.judulProduk}>
+            {item.nama_produk}
+          </Text>
+          <Text style={styles.harga}>{item.harga}</Text>
+        </View>
+      </View>
+    )
+  }
+
+  const calculateHarga = () => {
+    const total = selectedProduk.reduce((acc, item) => acc + item.harga, 0);
+    setTotalHarga(total);
+  }
 
   const handleBayarPesanan = () => {
     // Navigasi ke halaman BayarProduk
-    navigation.navigate('BayarProduk');
+    navigation.navigate('BayarProduk', { data: selectedProduk });
   };
 
+  useEffect(() => {
+    calculateHarga();
+  }, [])
   return (
     <>
       <View style={styles.container}>
@@ -31,68 +63,15 @@ const DetailProduk = () => {
           </TouchableOpacity>
           <Text style={styles.headers}>Rincian Pesanan</Text>
         </View>
-        <ScrollView>
-          {/* Gambar dan detail produk pertama */}
-          <View style={styles.ProdukItem}>
-            <Image
-              style={styles.imageItem}
-              source={{
-                uri:
-                  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-            />
-            <View style={styles.ProdukDetail}>
-              <Text style={styles.kategoriProduk}>| Makanan</Text>
-              <Text style={styles.judulProduk}>
-                Ini Merupakan Judul Produk Makanan
-              </Text>
-              <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-              <Text style={styles.harga}>Rp 50.000</Text>
-            </View>
-          </View>
-          {/* Gambar dan detail produk kedua */}
-          <View style={styles.ProdukItem}>
-            <Image
-              style={styles.imageItem}
-              source={{
-                uri:
-                  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-            />
-            <View style={styles.ProdukDetail}>
-              <Text style={styles.kategoriProduk}>| Makanan</Text>
-              <Text style={styles.judulProduk}>
-                Ini Merupakan Judul Produk Makanan
-              </Text>
-              <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-              <Text style={styles.harga}>Rp 50.000</Text>
-            </View>
-          </View>
-          {/* Gambar dan detail produk ketiga */}
-          <View style={styles.ProdukItem}>
-            <Image
-              style={styles.imageItem}
-              source={{
-                uri:
-                  'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1426&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-              }}
-            />
-            <View style={styles.ProdukDetail}>
-              <Text style={styles.kategoriProduk}>| Makanan</Text>
-              <Text style={styles.judulProduk}>
-                Ini Merupakan Judul Produk Makanan
-              </Text>
-              <Text style={styles.deskripsiProduk}>Lejat dan Bergiji Well</Text>
-              <Text style={styles.harga}>Rp 50.000</Text>
-            </View>
-          </View>
-          {/* Keterangan Total Bayar */}
-          <View style={styles.totalBayarContainer}>
-            <Text style={styles.totalBayarText}>Total Bayar:</Text>
-            <Text style={styles.totalBayarHarga}>Rp 150.000</Text>
-          </View>
-        </ScrollView>
-        {/* Tombol Bayar Pesanan */}
+        <FlatList
+          data={selectedProduk}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id_keranjang.toString()}
+        />
+        <View style={styles.totalBayarContainer}>
+          <Text style={styles.totalBayarText}>Total Bayar:</Text>
+          <Text style={styles.totalBayarHarga}>Rp. {totalHarga}</Text>
+        </View>
         <TouchableOpacity
           style={styles.buttonBayar}
           onPress={handleBayarPesanan}
