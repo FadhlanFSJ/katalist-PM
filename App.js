@@ -57,16 +57,16 @@ const MainPageNavigator = () => {
 
 const HistoryPageNavigator = () => {
   return (
-  <HistoryPage.Navigator
-    initialRouteName="HistoryTransaksi"
-    screenOptions={headerStyle}
-  >
-    <HistoryPage.Screen
+    <HistoryPage.Navigator
+      initialRouteName="HistoryTransaksi"
+      screenOptions={headerStyle}
+    >
+      <HistoryPage.Screen
         name="HistoryTransaksi"
         component={HistoryTransaksi}
         options={{ headerShown: false }}
-      /> 
-  </HistoryPage.Navigator>  
+      />
+    </HistoryPage.Navigator>
   )
 }
 
@@ -97,7 +97,7 @@ const BottomNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === "Menu Utama") {
+          if (route.name === "Menu") {
             iconName = 'home'
           } else if (route.name === "History Transaksi") {
             iconName = 'history'
@@ -128,7 +128,7 @@ const BottomNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Menu Utama" component={MainPageNavigator} options={{ unmountOnBlur: true, headerShown: false }} />
+      <Tab.Screen name="Menu" component={MainPageNavigator} options={{ unmountOnBlur: true, headerShown: false }} />
       <Tab.Screen name="History Transaksi" component={HistoryPageNavigator} options={{ unmountOnBlur: true, headerShown: false }} />
       <Tab.Screen name="Profile" component={ProfilePageNavigator} options={{ unmountOnBlur: true, headerShown: false }} />
     </Tab.Navigator>

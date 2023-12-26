@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
-  ScrollView,
   Image,
   FlatList,
   Alert
@@ -20,9 +19,12 @@ const DetailProduk = () => {
   const store = route.params || {};
   const [keranjang, setKeranjang] = useState([]);
   const [totalHarga, setTotalHarga] = useState(0);
+  const [idToko, setIdToko] = useState(store.data.id);
+  const idCounter = useRef(1);
 
   const handlePesan = (item) => {
     navigation.navigate('DetailProduk', {
+      // data: keranjang
       selectedProducts: keranjang,
       selectedProductInfo: {
         imageProduk: item.imageProduk,
@@ -31,7 +33,9 @@ const DetailProduk = () => {
       },
     });
   };
-
+  // useEffect(() => {
+  //   setKeranjang((prevKeranjang) => [...prevKeranjang, { id_toko: idToko }]);
+  // }, [])
   const pesan = () => {
     if (totalHarga === 0) {
       Alert.alert(
@@ -61,7 +65,6 @@ const DetailProduk = () => {
         <View style={styles.ProdukDetail}>
           <Text style={styles.judulProduk}>{item.nama_produk}</Text>
           <Text style={styles.deskripsiProduk}>Rp. {item.harga}</Text>
-          <Text style={styles.stokProduk}>Stok yang tersedia : {item.stok}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.buttonPesan]}
@@ -82,7 +85,13 @@ const DetailProduk = () => {
   };
 
   const handleAddToCart = (item) => {
-    setKeranjang((prevKeranjang) => [item, ...prevKeranjang]);
+    const id_keranjang = idCounter.current++;
+    const listItemKeranjang = {
+      ...item,
+      id_keranjang,
+      id_toko: idToko
+    };
+    setKeranjang((prevKeranjang) => [...prevKeranjang, listItemKeranjang]);
     setTotalHarga((prevTotalHarga) => prevTotalHarga + item.harga);
     console.log(`Menambahkan Data ${item} pada Keranjang!`);
     console.log(keranjang);

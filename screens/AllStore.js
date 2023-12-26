@@ -13,12 +13,13 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Assume you have already set up your navigation stack
 
 export default function AllStore({ route }) {
   const navigation = useNavigation();
-  const { username } = route.params || {};
+  const [username, setUsername] = useState('')
   const [selectedCategory, setSelectedCategory] = React.useState("Semua");
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -33,7 +34,7 @@ export default function AllStore({ route }) {
         getData();
       } else {
         // filteredData = data.filter(item => item.kategori.toLowerCase() === lowerCaseKategori);
-        const response = await axios.get(`http://192.168.1.4:3001/toko?kategori=${lowerCaseKategori}`)
+        const response = await axios.get(`http://192.168.1.8:3001/toko?kategori=${lowerCaseKategori}`)
         setData(response.data)
       }
       setSelectedCategory(category);
@@ -77,8 +78,20 @@ export default function AllStore({ route }) {
       console.error("Error Getting data: ", error)
     }
   }
+  const loadUserData = async () => {
+    try {
+      const storedUserData = await AsyncStorage.getItem('userData');
+      if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        setUsername(userData.username);
+      }
+    } catch (error) {
+      console.error('Error Getting data user form Async Storage: ', error)
+    }
+  }
   useEffect(() => {
     getData();
+    loadUserData();
   }, []);
 
   const renderItem = ({ item }) => {

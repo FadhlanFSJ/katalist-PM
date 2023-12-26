@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import QRCode from 'react-native-qrcode-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BayarProduk = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const [countdown, setCountdown] = useState(120);
   const [isCancelable, setIsCancelable] = useState(true);
+  const [data, setData] = useState([]);
+  const [user, setUser] = useState([]);
+  const beliProduk = route.params.data;
+
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -18,10 +24,32 @@ const BayarProduk = () => {
 
   useEffect(() => {
     if (countdown === 0) {
-      setIsCancelable(false); 
+      setIsCancelable(false);
     }
   }, [countdown, navigation]);
+  useEffect(() => {
+    loadUserData();
+  }, [])
 
+  const getData = async () => {
+    try {
+      const response = await axios.get('http://192.168.1.8:3001/toko/');
+      setData(response.data)
+    } catch (error) {
+      console.error("Error Getting data: ", error)
+    }
+  };
+
+  const loadUserData = async () => {
+    try {
+      const storedUserData = await AsyncStorage.getItem('userData');
+      if (storedUserData) {
+        setUser(JSON.parse(storedUserData));
+      }
+    } catch (error) {
+      console.error('Error Getting data user form Async Storage: ', error)
+    }
+  }
   const handleBatalkanPesanan = () => {
     Alert.alert(
       'Konfirmasi Pembatalan Pesanan',
@@ -43,9 +71,25 @@ const BayarProduk = () => {
     );
   };
 
-  const handleDownloadQRCode = () => {
-    // Tambahkan logika untuk mendownload QR Code di sini
-    alert('QR Code berhasil diunduh');
+  const addHistoryPembelian = async () => {
+    try {
+      if (!user || Object.keys(user).length === 0) {
+        await loadUserData();
+      }
+      const historyData = {
+        ...beliProduk,
+        userData: user
+      };
+      const existingHistory = await AsyncStorage.getItem('purchaseHistory');
+      const parsedHistory = existingHistory ? JSON.parse(existingHistory) : [];
+      parsedHistory.push(historyData);
+      await AsyncStorage.setItem('purchaseHistory', JSON.stringify(parsedHistory));
+      alert("Pembelian Berhasil ditambahkan ke History");
+      console.log("Data History : ", parsedHistory);
+    } catch (error) {
+      console.error("Error: ", error)
+    }
+    // alert('QR Code berhasil diunduh');
   };
 
   const formatCountdown = (seconds) => {
@@ -73,15 +117,15 @@ const BayarProduk = () => {
         <TouchableOpacity
           style={[styles.button, styles.whiteButton]}
           onPress={handleBatalkanPesanan}
-          disabled={!isCancelable} 
+          disabled={!isCancelable}
         >
           <Text style={[styles.buttonText, styles.orangeText]}>Batalkan Pesanan</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.orangeButton]}
-          onPress={handleDownloadQRCode}
+          onPress={() => addHistoryPembelian()}
         >
-          <Text style={styles.buttonText}>Download QR Code</Text>
+          <Text style={styles.buttonText}>Bayar Sekarang!!!</Text>
         </TouchableOpacity>
       </View>
     </View>
