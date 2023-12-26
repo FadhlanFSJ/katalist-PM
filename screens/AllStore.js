@@ -30,7 +30,7 @@ export default function AllStore({ route }) {
         getData();
       } else {
         // filteredData = data.filter(item => item.kategori.toLowerCase() === lowerCaseKategori);
-        const response = await axios.get(`http://192.168.1.8:3001/toko?kategori=${lowerCaseKategori}`)
+        const response = await axios.get(`http://192.168.1.4:3001/toko?kategori=${lowerCaseKategori}`)
         setData(response.data)
       }
       setSelectedCategory(category);
