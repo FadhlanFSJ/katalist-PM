@@ -10,6 +10,7 @@ import {
   ScrollView,
   Image,
   FlatList,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -21,6 +22,8 @@ export default function AllStore({ route }) {
   const [selectedCategory, setSelectedCategory] = React.useState("Semua");
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchToko, setSearchToko] = useState('');
+  const hasUsername = Boolean(username);
 
   const handleCategoryPress = async (category) => {
     const lowerCaseKategori = category.toLowerCase();
@@ -39,12 +42,32 @@ export default function AllStore({ route }) {
       console.error('Error filtering data: ', error.message);
       return [];
     }
-
   };
+  const handleSearch = () => {
+    if (searchToko === '') {
+      getData();
+    } else {
+      const filteredData = data.filter(item => item.nama.includes(searchToko));
+      setData(filteredData)
+    }
+  }
   const [profileImage, setProfileImage] = useState(null);
 
   const handleProfile = () => {
-    navigation.navigate("Profile");
+    if (hasUsername) {
+      navigation.navigate("Profile");
+    } else {
+      Alert.alert(
+        'Belum Login',
+        'Sepertinya Anda Belum melakukan login, lakukan login terlebih dahulu!',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Login')
+          }
+        ]
+      )
+    }
   };
   const getData = async () => {
     try {
@@ -79,7 +102,20 @@ export default function AllStore({ route }) {
   };
 
   const navigateToDetailStore = (store) => {
-    navigation.navigate("DetailStore", { data: store });
+    if (hasUsername) {
+      navigation.navigate("DetailStore", { data: store });
+    } else {
+      Alert.alert(
+        'Belum Login',
+        'Sepertinya anda belum melakukan login, lakukan login terlebih dahulu!',
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Login')
+          }
+        ]
+      )
+    }
   };
 
   return (
@@ -104,8 +140,13 @@ export default function AllStore({ route }) {
           <TextInput
             style={styles.searchbar}
             placeholder="Cari Toko"
+            value={searchToko}
+            onChangeText={(text) => setSearchToko(text)}
           />
-          <TouchableOpacity style={{ marginLeft: 5 }}>
+          <TouchableOpacity
+            style={{ marginLeft: 5 }}
+            onPress={handleSearch}
+          >
             <Text>Search</Text>
           </TouchableOpacity>
         </View>
