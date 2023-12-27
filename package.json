@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "serve-json": "json-server --watch db.json --host 192.168.1.8 --port 3001"
+    "serve-json": "json-server --watch db.json --host 10.217.17.131 --port 3001"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",

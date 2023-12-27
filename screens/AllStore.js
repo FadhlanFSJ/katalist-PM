@@ -34,7 +34,7 @@ export default function AllStore({ route }) {
         getData();
       } else {
         // filteredData = data.filter(item => item.kategori.toLowerCase() === lowerCaseKategori);
-        const response = await axios.get(`http://192.168.1.8:3001/toko?kategori=${lowerCaseKategori}`)
+        const response = await axios.get(`http://10.217.17.131/toko?kategori=${lowerCaseKategori}`)
         setData(response.data)
       }
       setSelectedCategory(category);
@@ -72,7 +72,7 @@ export default function AllStore({ route }) {
   };
   const getData = async () => {
     try {
-      const response = await axios.get('http://192.168.1.8:3001/toko');
+      const response = await axios.get('http://10.217.17.131:3001/toko');
       setData(response.data)
     } catch (error) {
       console.error("Error Getting data: ", error)
