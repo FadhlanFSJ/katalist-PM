@@ -34,6 +34,13 @@ const HistoryTransaksi = () => {
 
   useEffect(() => {
     getData();
+
+    const updateHistoryBeli = historyBeli.map((item, index) => {
+      const updatedItem = { ...item };
+      updateItem[0].id_pembelian = index + 1;
+      return updatedItem
+    });
+    setHistoryBeli(updateHistoryBeli);
   }, []);
 
   const renderItem = ({ item }) => {
@@ -94,7 +101,7 @@ const HistoryTransaksi = () => {
       <Text style={styles.header}>History Transaksi</Text>
       <FlatList
         data={historyBeli}
-        keyExtractor={(item) => item.id_keranjang}
+        keyExtractor={(item) => item.id_pembelian}
         renderItem={renderItem}
       />
     </View>
